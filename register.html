@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Reporter_Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>🏘️ Community Reporter</h1>
+        <p>Create your account</p>
+
+        <form id="registerForm">
+            <h2>Register</h2>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" placeholder="Full Name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Password" required>
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <label for ="role">Register as</label>
+            <select id="role" required>
+                <option value="">Select Role</option>
+                <option value="citizen">Citizen</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Create Account</button>
+            <p>Already have an account? <a href="index.html">Login here</a></p>
+        </form>
+    </div>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

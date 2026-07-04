@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Reporter-Dashboard</title>
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<nav class="navbar">
+<h1>🏘️ Community Reporter</h1>
+<div class="nav-links">
+<span id="userEmail"></span>
+<a href="report.html">+ New Report</a>
+<button id="logoutBtn">Logout</button>
+</div>
+</nav>
+<div class="container">
+<h2>Community Reports</h2>
+<div class="filters">
+<select id="categoryFilter">
+<option value="all">All Categories</option>
+<option value="streetlight">Broken Streetlight</option>
+<option value="pothole">Potholes</option>
+<option value="water">Water Shortage</option>
+<option value="dumping">Illegal Dumping</option>
+<option value="flooding">Flooding</option>
+<option value="other">Other</option>
+</select>
+<select id="statusFilter">
+<option value="all">All Statuses</option>
+<option value="pending">Pending</option>
+<option value="inprogress">In Progress</option>
+<option value="resolved">Resolved</option>
+</select>
+</div>
+<div id="reportsList"></div>
+</div>
+<script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

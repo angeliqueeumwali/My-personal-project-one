@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Reporter - New Report</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🏘️ Community Reporter</h1>
+        <div class="nav-links">
+            <span id="UserEmail"></span>
+        <a href="dashboard.html">Back to Dashboard</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Submit a  New Report</h2>
+        <form id="reportForm">
+            <label for="title">Report Title:</label>
+            <input type="text" id="title" name="title" placeholder="e.g., Broken Streetlight on Main St" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="">Select a category</option>
+                <option value="streetlight">Broken Streetlight</option>
+                <option value="pothole">Pothole</option>
+                <option value="water">Water Shortage</option>
+                <option value="dumping">Illegal Dumping</option>
+                <option value="flooding">Flooding</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="5" required></textarea>
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" name="image" accept="image/*" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <button type="submit">Submit Report</button>
+        </form>
+        <div id="errorMsg"></div>
+        <div id="successMsg"></div>
+    </div>
+
+    <script type="module" src="js/report.js"></script>
+</body>
+</html>

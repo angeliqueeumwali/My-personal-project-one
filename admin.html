@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Reporter - Admin</title>
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<nav class="navbar">
+<h1>🏘️ Community Reporter</h1>
+<div class="nav-links">
+<span id="userEmail"></span>
+<a href="dashboard.html">Back to Dashboard</a>
+<button id="logoutBtn">Logout</button>
+</div>
+</nav>
+<div class="container">
+<h2>Admin Dashboard</h2>
+<div class="stats">
+<div class="stat-card">
+<h3 id="totalReports">0</h3>
+<p>Total Reports</p>
+</div>
+<div class="stat-card">
+<h3 id="pendingReports">0</h3>
+<p>Pending Reports</p>
+</div>
+<div class="stat-card">
+<h3 id="inprogressReports">0</h3>
+<p>In Progress Reports</p>
+</div>
+<div class="stat-card">
+<h3 id="resolvedReports">0</h3>
+<p>Resolved Reports</p>
+</div>
+</div>
+<h3>All Reports</h3>
+<div id="adminReportsList"></div>
+</div>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
