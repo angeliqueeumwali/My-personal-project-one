@@ -1,48 +1,37 @@
 
-import { auth, db } from "./firebase-config.js";
-import {
-onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-collection,
-query,
-orderBy,
-onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-
-onAuthStateChanged(auth, (user) => {
-if (!user) {
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser) {
 window.location.href = "index.html";
-} else {
-document.getElementById("userEmail").textContent = user.email;
-loadReports();
 }
-});
+
+const userEmailSpan = document.getElementById("userEmail");
+if (userEmailSpan) {
+userEmailSpan.textContent = currentUser.name;
+}
 
 
 function loadReports() {
-const q = query(collection(db, "reports"), orderBy("createdAt", "desc"));
-
-onSnapshot(q, (snapshot) => {
+const reports = JSON.parse(localStorage.getItem("reports")) || [];
 const categoryFilter = document.getElementById("categoryFilter").value;
 const statusFilter = document.getElementById("statusFilter").value;
 
-let reports = [];
-snapshot.forEach((doc) => {
-reports.push({ id: doc.id, ...doc.data() });
-});
 
+let filtered = reports;
 
 if (categoryFilter !== "all") {
-reports = reports.filter((r) => r.category === categoryFilter);
-}
-if (statusFilter !== "all") {
-reports = reports.filter((r) => r.status === statusFilter);
+filtered = filtered.filter(function(r) {
+return r.category === categoryFilter;
+});
 }
 
-displayReports(reports);
+if (statusFilter !== "all") {
+filtered = filtered.filter(function(r) {
+return r.status === statusFilter;
 });
+}
+
+displayReports(filtered);
 }
 
 
@@ -55,7 +44,7 @@ reportsList.innerHTML = "<p>No reports found.</p>";
 return;
 }
 
-reports.forEach((report) => {
+reports.forEach(function(report) {
 const card = document.createElement("div");
 card.classList.add("report-card");
 card.innerHTML = `
@@ -63,12 +52,12 @@ card.innerHTML = `
 <p><strong>Category:</strong> ${report.category}</p>
 <p><strong>Location:</strong> ${report.location}</p>
 <p><strong>Description:</strong> ${report.description}</p>
+<p><strong>Date:</strong> ${report.createdAt}</p>
 <p><strong>Status:</strong>
 <span class="status-badge status-${report.status}">
 ${report.status}
 </span>
 </p>
-${report.photoURL ? `<img src="${report.photoURL}" alt="Report photo" style="width:100%;max-width:300px;margin-top:10px;border-radius:5px;" />` : ""}
 `;
 reportsList.appendChild(card);
 });
@@ -79,8 +68,10 @@ document.getElementById("categoryFilter").addEventListener("change", loadReports
 document.getElementById("statusFilter").addEventListener("change", loadReports);
 
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-const { signOut } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
-await signOut(auth);
+document.getElementById("logoutBtn").addEventListener("click", function() {
+localStorage.removeItem("currentUser");
 window.location.href = "index.html";
 });
+
+
+loadReports();

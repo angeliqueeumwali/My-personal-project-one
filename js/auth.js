@@ -1,73 +1,72 @@
 
-import { auth, db } from "./firebase-config.js";
-import {
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// REGISTER
 const registerForm = document.getElementById("registerForm");
 if (registerForm) {
-registerForm.addEventListener("submit", async (e) => {
+registerForm.addEventListener("submit", function(e) {
 e.preventDefault();
+
 const name = document.getElementById("name").value;
 const email = document.getElementById("email").value;
 const password = document.getElementById("password").value;
 const role = document.getElementById("role").value;
 
-try {
-const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-const user = userCredential.user;
 
-await setDoc(doc(db, "users", user.uid), {
-name: name,
-email: email,
-role: role
+const users = JSON.parse(localStorage.getItem("users")) || [];
+
+
+const existingUser = users.find(function(user) {
+return user.email === email;
 });
 
+if (existingUser) {
+document.getElementById("errorMsg").textContent = "Email already registered!";
+return;
+}
+
+
+users.push({ name, email, password, role });
+localStorage.setItem("users", JSON.stringify(users));
+
+alert("Account created successfully! Please login.");
 window.location.href = "index.html";
-} catch (error) {
-document.getElementById("error-message").textContent = error.message;
-}
 });
 }
 
-// LOGIN
+
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
-loginForm.addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", function(e) {
 e.preventDefault();
+
 const email = document.getElementById("email").value;
 const password = document.getElementById("password").value;
 
-try {
-const userCredential = await signInWithEmailAndPassword(auth, email, password);
-const user = userCredential.user;
+const users = JSON.parse(localStorage.getItem("users")) || [];
 
-const { getDoc } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-const userDoc = await getDoc(doc(db, "users", user.uid));
+const user = users.find(function(u) {
+return u.email === email && u.password === password;
+});
 
-if (userDoc.exists()) {
-const role = userDoc.data().role;
-if (role === "admin") {
+if (!user) {
+document.getElementById("errorMsg").textContent = "Invalid email or password!";
+return;
+}
+
+
+localStorage.setItem("currentUser", JSON.stringify(user));
+
+if (user.role === "admin") {
 window.location.href = "admin.html";
 } else {
 window.location.href = "dashboard.html";
 }
-}
-} catch (error) {
-document.getElementById("error-message").textContent = error.message;
-}
 });
 }
 
-// LOGOUT
+
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
-logoutBtn.addEventListener("click", async () => {
-await signOut(auth);
+logoutBtn.addEventListener("click", function() {
+localStorage.removeItem("currentUser");
 window.location.href = "index.html";
 });
 }

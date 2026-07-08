@@ -1,25 +1,13 @@
 
-import { auth, db } from "./firebase-config.js";
-import {
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-collection,
-addDoc,
-serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// Check if user is logged in
-onAuthStateChanged(auth, (user) => {
-if (!user) {
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser) {
 window.location.href = "index.html";
 }
-});
 
-// SUBMIT REPORT
+
 const reportForm = document.getElementById("reportForm");
 if (reportForm) {
-reportForm.addEventListener("submit", async (e) => {
+reportForm.addEventListener("submit", function(e) {
 e.preventDefault();
 
 const title = document.getElementById("title").value;
@@ -27,23 +15,31 @@ const category = document.getElementById("category").value;
 const location = document.getElementById("location").value;
 const description = document.getElementById("description").value;
 
-try {
-await addDoc(collection(db, "reports"), {
+
+const reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+
+const newReport = {
+id: Date.now(),
 title,
 category,
 location,
 description,
-photoURL: "",
 status: "pending",
-userId: auth.currentUser.uid,
-createdAt: serverTimestamp()
-});
+userId: currentUser.email,
+createdAt: new Date().toLocaleDateString()
+};
+
+
+reports.push(newReport);
+localStorage.setItem("reports", JSON.stringify(reports));
 
 document.getElementById("successMsg").textContent = "Report submitted successfully!";
 reportForm.reset();
 
-} catch (error) {
-document.getElementById("errorMsg").textContent = error.message;
-}
+
+setTimeout(function() {
+window.location.href = "dashboard.html";
+}, 2000);
 });
 }
